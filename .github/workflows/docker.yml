@@ -1,0 +1,48 @@
+name: docker
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-saltstack-tester:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [jammy, focal, bionic]
+        salt: [3003, 3004]
+
+    env:
+      GIT_SHA: ${GITHUB_SHA::8}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Docker Metadata
+        id: docker_metadata
+        uses: crazy-max/ghaction-docker-meta@v2
+        with:
+          images: |
+            ghcr.io/ekristen/cast-saltstack-tester
+          tags: |
+            type=raw,value=${{ matrix.os }}-${{ matrix.salt }}
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./cast-saltstack-tester
+          file: ./cast-saltstack-tester/Dockerfile.${{ matrix.os }}
+          build-args: |
+            SALTVERSION=${{ matrix.salt }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_metadata.outputs.tags }}
