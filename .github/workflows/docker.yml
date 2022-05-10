@@ -26,7 +26,7 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v2
         with:
           images: |
-            ghcr.io/ekristen/cast/saltstack-tester
+            ghcr.io/ekristen/cast-tools/saltstack-tester
           tags: |
             type=raw,value=${{ matrix.os }}-${{ matrix.salt }}
       - name: Setup Docker Buildx
@@ -40,8 +40,8 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v2
         with:
-          context: ./cast-saltstack-tester
-          file: ./cast-saltstack-tester/Dockerfile.${{ matrix.os }}
+          context: ./saltstack-tester
+          file: ./saltstack-tester/Dockerfile.${{ matrix.os }}
           build-args: |
             SALTVERSION=${{ matrix.salt }}
           push: ${{ github.event_name != 'pull_request' }}
