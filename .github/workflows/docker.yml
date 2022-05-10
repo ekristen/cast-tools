@@ -26,7 +26,7 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v2
         with:
           images: |
-            ghcr.io/ekristen/cast-saltstack-tester
+            ghcr.io/ekristen/cast/saltstack-tester
           tags: |
             type=raw,value=${{ matrix.os }}-${{ matrix.salt }}
       - name: Setup Docker Buildx
