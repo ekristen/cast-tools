@@ -1,5 +1,8 @@
 name: docker
 
+permissions:
+  packages: write
+
 on:
   workflow_dispatch:
   push:
