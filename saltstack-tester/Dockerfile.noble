@@ -5,8 +5,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN \
   apt-get update && \
-  apt-get install -y wget gnupg git && \
-  wget -O - https://repo.saltproject.io/salt/py3/ubuntu/24.04/amd64/${SALTVERSION}/SALT-PROJECT-GPG-PUBKEY-2023.gpg | apt-key add - && \
-  echo "deb http://repo.saltproject.io/salt/py3/ubuntu/24.04/amd64/${SALTVERSION} noble main" | tee /etc/apt/sources.list.d/saltstack.list && \
+  apt-get install -y curl wget gnupg git && \
+  curl -fsSL https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public | sudo tee /usr/share/keyrings/salt-archive-keyring-2023.pgp && \
+  echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring-2023.pgp arch=amd64] https://packages.broadcom.com/artifactory/saltproject-deb/ stable main" | tee /etc/apt/sources.list.d/saltstack.list && \
   apt-get update && \
   apt-get install -y salt-common

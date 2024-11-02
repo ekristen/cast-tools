@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [noble]
+        os: [noble, focal, jammy]
         salt: [3006, 3007]
 
     env:
