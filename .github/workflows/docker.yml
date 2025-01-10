@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-saltstack-tester:
@@ -15,8 +15,15 @@ jobs:
 
     strategy:
       matrix:
-        os: [noble, focal, jammy]
+        os: [20.04, 22.04, 24.04]
         salt: [3006, 3007]
+        include:
+          - os: 20.04
+            code: focal
+          - os: 22.04
+            code: jammy
+          - os: 24.04
+            code: noble
 
     env:
       GIT_SHA: ${GITHUB_SHA::8}
@@ -32,6 +39,9 @@ jobs:
             ghcr.io/ekristen/cast-tools/saltstack-tester
           tags: |
             type=raw,value=${{ matrix.os }}-${{ matrix.salt }}
+            type=raw,value=${{ matrix.code }}-${{ matrix.salt }}
+            type=raw,value=${{ matrix.os }}
+            type=raw,value=${{ matrix.code }}
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to GitHub Container Registry
@@ -44,8 +54,13 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./saltstack-tester
-          file: ./saltstack-tester/Dockerfile.${{ matrix.os }}
+          file: ./saltstack-tester/Dockerfile
+          platforms: linux/amd64,linux/arm64
           build-args: |
             SALTVERSION=${{ matrix.salt }}
+            OSVERSION=${{ matrix.os }}
+            OSCODE=${{ matrix.code }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_metadata.outputs.tags }}
+          labels: ${{ steps.docker_metadata.outputs.labels }}
+          cache-to: type=inline
