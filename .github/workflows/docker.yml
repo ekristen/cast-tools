@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [22.04, 24.04]
-        salt: [3006, 3007]
+        salt: [3007, 3006]
         include:
           - os: 22.04
             code: jammy
