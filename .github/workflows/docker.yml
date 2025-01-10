@@ -57,6 +57,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           build-args: |
             SALTVERSION=${{ matrix.salt }}
+            OSVERSION=${{ matrix.os }}
           file: ./saltstack-tester/Dockerfile
           push: true
           tags: ${{ steps.docker_metadata.outputs.tags }}
