@@ -15,14 +15,14 @@ jobs:
 
     strategy:
       matrix:
-        os: [22.04, 24.04, 26.06]
+        os: [22.04, 24.04, 26.04]
         salt: [3007, 3006]
         include:
           - os: 22.04
             code: jammy
           - os: 24.04
             code: noble
-          - os: 26.06
+          - os: 26.04
             code: resolute
 
     env:
