@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: setup-qemu
         id: qemu
         uses: docker/setup-qemu-action@53851d14592bedcffcf25ea515637cff71ef929a # v3
