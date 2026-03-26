@@ -44,7 +44,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: configure-metadata
         id: docker_metadata
-        uses: crazy-max/ghaction-docker-meta@369eb591f429131d6889c46b94e711f089e6ca96 # v5
+        uses: crazy-max/ghaction-docker-meta@c299e40c65443455700f0fdfc63efafe5b349051 # v5
         with:
           images: |
             ghcr.io/ekristen/cast-tools/saltstack-tester
